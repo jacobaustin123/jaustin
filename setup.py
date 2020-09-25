@@ -1,11 +1,29 @@
 import setuptools
+import json
+
+def get_version_info(path):
+    with open(path, "r") as f:
+        config = json.load(f)
+
+    major, minor, patch = config['version'].split('.')
+    version = major + "." + minor + "." + str(int(patch) + 1)
+    config['version'] = version
+
+    with open(path, "w") as f:
+        json.dump(config, f)
+    
+    print(f"current version is {version}.")
+
+    return version
+
+version = get_version_info("config.json")
 
 with open("README.md", "r") as f:
     long_description = f.read()
 
 setuptools.setup(
     name="jaustin", 
-    version="0.0.1",
+    version=version,
     author="Jacob Austin",
     url="https://github.com/jacobaustin123/jaustin",
     author_email="jacob.austin@columbia.edu",
